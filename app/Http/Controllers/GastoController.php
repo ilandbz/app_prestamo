@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Caja;
 use App\Models\Gasto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,13 +22,31 @@ class GastoController extends Controller
             'fecha' => 'required',
             'monto' => 'required'
         ]);
-        $gasto=new Gasto();
-        $gasto->id_usuario=Auth::user()->id;
-        $gasto->concepto=$request->concepto;
-        $gasto->fecha=$request->fecha;
-        $gasto->monto=$request->monto;
-        $gasto->save();
-        $request->session()->flash('success', 'Los datos se han guardado exitosamente.');
+        $saldo = Caja::saldo();
+
+        if($saldo>=$request->monto){
+            $caja=new Caja();
+            $caja->fecha=now();
+            $caja->id_usuario = Auth::user()->id;
+            $caja->tipo = 'SALIDA';
+            $caja->monto = $request->monto;
+            $caja->saldo = $saldo - $request->monto;
+            $caja->descripcion = 'GASTO';
+            $caja->save();
+
+            $gasto=new Gasto();
+            $gasto->id_usuario=Auth::user()->id;
+            $gasto->concepto=$request->concepto;
+            $gasto->fecha=$request->fecha;
+            $gasto->monto=$request->monto;
+            $gasto->save();
+
+
+
+            $request->session()->flash('success', 'Los datos se han guardado exitosamente.');
+        }else{
+            $request->session()->flash('error', 'No dispones de saldo en Caja');
+        }
         return redirect()->route('gastos.create');
     }
     public function edit(Gasto $gasto){

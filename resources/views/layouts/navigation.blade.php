@@ -15,13 +15,11 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    @php  if(session('tipo_usuario')=='Administrador'){ @endphp
+                    @if (session('tipo_usuario')=='Administrador')
                             <x-nav-link :href="route('usuarios.index')" :active="request()->routeIs('usuarios.*')">
                                 Usuarios
                             </x-nav-link>
-                    @php  }  @endphp
-
-
+                    @endif
                     @if (session('tipo_usuario')=='Cliente')
                         <x-nav-link :href="route('prestamos.index')" :active="request()->routeIs('prestamos.*')">
                             Prestamos
@@ -34,10 +32,15 @@
                             Gastos
                         </x-nav-link>
                     @endif
+                    <x-nav-link :href="route('caja.index')" :active="request()->routeIs('caja.*')">
+                        Caja
+                    </x-nav-link>
+                    <x-nav-link :href="route('gastos.index')" :active="request()->routeIs('gastos.*')">
+                        Reportes
+                    </x-nav-link>
 
                 </div>
             </div>
-
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ml-6">
                 <x-dropdown align="right" width="48">

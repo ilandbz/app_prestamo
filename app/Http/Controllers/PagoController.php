@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Caja;
 use App\Models\Prestamo;
 use App\Models\Pago;
 use Illuminate\Http\Request;
@@ -35,11 +37,21 @@ class PagoController extends Controller
             'fecha' => 'required|date',
             'monto' => 'required|numeric',
         ]);
-
+        $saldo = Caja::saldo();
         $prestamo = Prestamo::find($request->id_prestamo);
         $prestamo->saldo=$prestamo->saldo-$request->monto;
         $prestamo->estado=$prestamo->saldo <= 0 ? 0 : 1;
         $prestamo->save();
+
+        $caja=new Caja();
+        $caja->fecha=now();
+        $caja->id_usuario = Auth::user()->id;
+        $caja->tipo = 'SALIDA';
+        $caja->monto = $request->monto;
+        $caja->saldo = $saldo + $request->monto;
+        $caja->descripcion = 'PAGO';
+        $caja->save();
+
 
         $pago=new Pago();
         $pago->id_usuario=Auth::user()->id;

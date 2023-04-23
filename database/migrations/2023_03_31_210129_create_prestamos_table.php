@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('prestamos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_cliente')->nullable()->constrained('clientes')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('id_usuario')->nullable()->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('id_cliente')->constrained('clientes')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('id_usuario')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->dateTime('fecha');
             $table->date('fechavencimiento');
             $table->double('monto');
@@ -24,6 +24,7 @@ return new class extends Migration
             $table->integer('periodo');
             $table->double('saldo')->default(0);
             $table->decimal('cuota');
+            $table->foreignId('id_gestor')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->string('zona');
             $table->tinyInteger('estado')->default(1);
             $table->timestamps();

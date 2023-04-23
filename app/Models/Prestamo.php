@@ -19,6 +19,7 @@ class Prestamo extends Model
         'total',
         'frecuencia',
         'periodo',
+        'id_gestor',
         'saldo',
         'cuota',
         'zona',
@@ -31,5 +32,9 @@ class Prestamo extends Model
     public function usuario(): BelongsTo
     {
         return $this->belongsTo(User::class, 'id_usuario');
+    }
+    public function gestor(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'id_gestor');
     }
 }

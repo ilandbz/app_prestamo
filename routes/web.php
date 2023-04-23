@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CajaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\GastoController;
 use App\Http\Controllers\PagoController;
@@ -39,6 +40,12 @@ Route::get('/pagos/create/{prestamo}', [PagoController::class, 'create'])->middl
 Route::post('/pagos/store', [PagoController::class, 'store'])->name('pagos.store');
 Route::post('/pagos/destroy', [PagoController::class, 'store'])->name('pagos.destroy');
 Route::post('/usuarios/cargarlista', [UsuarioController::class, 'cargarlista'])->name('usuarios.cargarlista');
+
+Route::get('/caja', [CajaController::class, 'index'])->middleware(['auth', 'verified'])->name('caja.index');
+Route::post('/caja/store', [PagoController::class, 'store'])->middleware(['auth', 'verified'])->name('caja.store');
+Route::get('/caja/show', [CajaController::class, 'show'])->middleware(['auth', 'verified'])->name('caja.show');
+Route::delete('/caja/{caja}', [CajaController::class, 'destroy'])->middleware(['auth', 'verified'])->name('caja.destroy');
+Route::post('/caja/update', [CajaController::class, 'store'])->middleware(['auth', 'verified'])->name('caja.update');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
