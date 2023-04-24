@@ -11,7 +11,7 @@ class CajaController extends Controller
      */
     public function index()
     {
-        $cajaregistros = Caja::with('usuario:id,name')->orderBy('fecha', 'desc')->paginate(10);
+        $cajaregistros = Caja::with('usuario:id,name')->orderBy('fecha', 'desc')->paginate(5);
         return view('caja.plantilla',compact('cajaregistros'));
     }
 
@@ -46,5 +46,11 @@ class CajaController extends Controller
     {
         $caja->delete();
         return redirect()->route('caja.index');
+    }
+    public function cargarlista(Request $request){
+        $descripcion = $request->descripcion;
+        $cajaregistros = Caja::with('usuario:id,name')->where('descripcion', 'like', '%'.$descripcion.'%')->orderBy('fecha', 'desc')->paginate(5);
+        $vista = view('caja.tabla', compact('cajaregistros'))->render();
+        return response()->json(['html' => $vista]);
     }
 }

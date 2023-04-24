@@ -64,4 +64,10 @@ class GastoController extends Controller
         $gasto->delete();
         return redirect()->route('gastos.index');
     }
+    public function cargarlista(Request $request){
+        $descripcion = $request->descripcion;
+        $gastos = Gasto::with('usuario:id,name')->where('concepto', 'like', '%'.$descripcion.'%')->paginate(10);
+        $vista = view('gastos.tabla', compact('gastos'))->render();
+        return response()->json(['html' => $vista]);
+    }
 }

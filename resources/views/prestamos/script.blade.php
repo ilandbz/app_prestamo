@@ -42,10 +42,6 @@
                 console.log(error)
             });
     }
-    // function abrirModal() {
-    //     document.getElementById('miModal').classList.remove('hidden');
-    //     document.getElementsByTagName('body')[0].classList.add('overflow-y-hidden');
-    // }
 
     function cerrarModal() {
         document.getElementById('miModal').classList.add('hidden');
@@ -80,5 +76,72 @@
             //triggering the function
             downloadLink.click();
         }
+    }
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    function cargarTabla(mifecha) {
+        const fecha = mifecha;
+        const url = '{{ route('prestamos.cargarpagos') }}';
+        const opciones = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        },
+        body: JSON.stringify({ fecha: fecha })
+        };
+
+        fetch(url, opciones)
+        .then(response => response.json())
+            .then(data => {
+                document.getElementById('mostrar').innerHTML = data.html;
+            })
+        .catch(error => console.error('Error:', error));
+    }
+    function cargardatoscliente(){
+        var dni = document.getElementById('dni').value
+        const url = '{{ route('cliente.obtenerdatos') }}';
+        const opciones = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        },
+        body: JSON.stringify({ dni: dni })
+        };
+
+        fetch(url, opciones)
+        .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('apellidos').value=data.cliente.apellidos
+                    document.getElementById('nombres').value=data.cliente.nombres
+                    document.getElementById('direccionCasa').value=data.cliente.direccionCasa
+                    document.getElementById('direccionCobro').value=data.cliente.direccionCobro
+                    document.getElementById('telefono').value=data.cliente.telefono
+                    document.getElementById('telefonoContacto').value=data.cliente.telefonoContacto
+                } else {
+                console.log(data.message);
+                }
+            })
+        .catch(error => console.error('Error:', error));
+    }
+    function cargarLista(texto) {
+        const descripcion = texto;
+        const url = '{{ route('prestamos.cargarlista') }}';
+        const opciones = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        },
+        body: JSON.stringify({ descripcion: descripcion })
+        };
+
+        fetch(url, opciones)
+        .then(response => response.json())
+            .then(data => {
+                document.getElementById('mostrar').innerHTML = data.html;
+            })
+        .catch(error => console.error('Error:', error));
     }
 </script>

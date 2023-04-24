@@ -70,4 +70,9 @@ class PagoController extends Controller
     public function destroy(){
 
     }
+    public function cargarpagos(Request $request){
+        $pagos = Pago::with(['usuario:id,name', 'prestamo:id,saldo,id_cliente', 'prestamo.cliente:id,apellidos,nombres'])->where('fecha', 'like', $request->fecha.'%')->paginate(10);
+        $vista = view('prestamos.tablapagos', compact('pagos'))->render();
+        return response()->json(['html' => $vista]);
+    }
 }

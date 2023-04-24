@@ -19,13 +19,14 @@
     @endif
     <form method="POST" action="{{ route('prestamos.store') }}">
         @csrf
-        <h3>NUEVO CLIENTE</h3>
+        <h3>CLIENTE</h3>
         <table class="w-full mt-6">
             <tr>
                 <td width="20%" class="p-2">
                     <x-input-label for="dni" :value="__('DNI')" />
                     <x-text-input id="dni" class="block mt-1 w-full" type="text" name="dni" :value="old('dni')" required autofocus
-                    onkeypress="return event.charCode >= 48 && event.charCode <= 57"  />
+                    onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                    onchange="cargardatoscliente()"  />
                     <x-input-error :messages="$errors->get('dni')" class="mt-2" field="dni" />
                 </td>
                 <td class="p-2">

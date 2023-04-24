@@ -16,7 +16,7 @@
         <div class="grid grid-cols-3 gap-4">
             <div>
                 <x-input-label for="dni" :value="__('DNI')" />
-                <x-text-input id="dni" class="block mt-1 w-full" type="text" name="dni" :value="old('dni')" required autofocus autocomplete="dni" />
+                <x-text-input id="dni" class="block mt-1 w-full" type="text" name="dni" maxlength=8 :value="old('dni')" required autofocus autocomplete="dni" />
                 <x-input-error :messages="$errors->get('dni')" class="mt-2" />
             </div>
             <div>

@@ -1,51 +1,24 @@
 <div>
-@php
-    $total = 0;
-@endphp
-    <div id="tablareporte" class="relative overflow-x-auto mt-4">
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                    <th scope="col" class="px-6 py-3">Id Prestamo</th>
-                    <th scope="col" class="px-6 py-3">USUARIO</th>
-                    <th scope="col" >Fecha</th>
-                    <th scope="col">Cliente</th>
-                    <th scope="col" class="px-6 py-3">Monto</th>
-                    <th scope="col" class="px-6 py-3">Saldo</th>
-                    <th scope="col">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($pagos as $pago )
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <td scope="row" class="px-6 py-4">{{$pago->prestamo->id}}</td>
-                    <td scope="row" class="px-6 py-4">{{$pago->usuario->name}}</td>
-                    <td scope="row" class="px-6 py-4">{{$pago->fecha}}</td>
-                    <td scope="row" class="px-6 py-4">{{$pago->prestamo->cliente->apellidos.', '.$pago->prestamo->cliente->nombres}}</td>
-                    <td scope="row" class="px-6 py-4">{{$pago->monto }}
-                    @php
-                        $total+=$pago->monto
-                    @endphp</td>
-                    <td scope="row" class="px-6 py-4">{{$pago->prestamo->saldo}}</td>
-                    <td scope="row" class="flex items-center px-6 py-4 space-x-3 px-6 py-4">
-                        <form class="inline-block" action="{{ route('pagos.destroy', $pago->id) }}" method="POST" onsubmit="return confirm('{{ __('¿Estás seguro de que deseas eliminar este préstamo?') }}')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="text-white text-xs bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 rounded-full text-sm px-3 py-2 text-center mr-1 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Eliminar</button>
-                        </form>
-                    </td>
-                </tr>
-                @endforeach
 
-            </tbody>
-        </table>
-    <!-- Mostramos los links de paginación -->
-    {{ $pagos->links() }}
+<form class="mt-4">
+    <div class="grid grid-cols-3 gap-4">
+        <label for="fecha" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Buscar</label>
+        <div class="relative">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+
+            <input type="date" id="fecha" value="{{ date('Y-m-d') }}" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="descripcion" required>
+            <button type="button"
+            onclick="cargarTabla(document.getElementById('fecha').value)"
+            class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Buscar</button>
+        </div>
     </div>
 
-<h3>RESUMEN TOTAL PAGOS EN EL DIA : S/.{{number_format($total,2)}}</h3>
-<br>
-    <button
-    class="text-white text-xs bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 rounded-full text-sm px-3 py-2 mr-1 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
-    id="btnexportarexcel" title="Exportar a Excel" type="button" onclick="exportTableToExcel('tablareporte', 'REPORTE PAGOS')"><i class="fas fa-file-excel"></i>Generar Archivo Excel</button>
-</div>
+</form>
+    <div id="mostrar">
+    @include('prestamos.tablapagos')
+
+    </div>
+</div><br>
+

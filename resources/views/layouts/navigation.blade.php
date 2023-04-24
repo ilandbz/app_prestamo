@@ -16,9 +16,12 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     @if (session('tipo_usuario')=='Administrador')
-                            <x-nav-link :href="route('usuarios.index')" :active="request()->routeIs('usuarios.*')">
-                                Usuarios
-                            </x-nav-link>
+                        <x-nav-link :href="route('usuarios.index')" :active="request()->routeIs('usuarios.*')">
+                            Usuarios
+                        </x-nav-link>
+                        <x-nav-link :href="route('caja.index')" :active="request()->routeIs('caja.*')">
+                            Caja
+                        </x-nav-link>
                     @endif
                     @if (session('tipo_usuario')=='Cliente')
                         <x-nav-link :href="route('prestamos.index')" :active="request()->routeIs('prestamos.*')">
@@ -32,13 +35,6 @@
                             Gastos
                         </x-nav-link>
                     @endif
-                    <x-nav-link :href="route('caja.index')" :active="request()->routeIs('caja.*')">
-                        Caja
-                    </x-nav-link>
-                    <x-nav-link :href="route('gastos.index')" :active="request()->routeIs('gastos.*')">
-                        Reportes
-                    </x-nav-link>
-
                 </div>
             </div>
             <!-- Settings Dropdown -->

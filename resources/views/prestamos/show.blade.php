@@ -44,6 +44,29 @@
                 Pagar Cuota
                 <svg aria-hidden="true" class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
             </a>
+            <div class="p-4">
+            <h3>DETALLE DE PAGOS</h3>
+            <table id="tablareporte" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">NRO</th>
+                        <th scope="col" class="px-6 py-3">FECHA</th>
+                        <th scope="col" class="px-6 py-3">MONTO</th>
+                        <th scope="col" class="px-6 py-3">USUARIO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($pagos as $pago )
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td scope="row"  class="px-6 py-4">{{$loop->iteration}}</td>
+                        <td scope="row"  class="px-6 py-4">{{$pago->fecha}}</td>
+                        <td scope="row"  class="px-6 py-4">{{$pago->monto}}</td>
+                        <td scope="row"  class="px-6 py-4">{{$pago->usuario->name}}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            </div>
         </div>
         <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
           <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm" onclick="cerrarModal()">

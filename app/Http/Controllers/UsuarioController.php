@@ -86,9 +86,8 @@ class UsuarioController extends Controller
     }
     public function cargarlista(Request $request){
         $descripcion = $request->descripcion;
-        $usuarios=User::with('TipoUsuario:id,nombre')->where('name', 'like', '%'.$descripcion.'%')->paginate(10);
+        $usuarios=User::with('TipoUsuario:id,nombre')->where('name', 'like', '%'.$descripcion.'%')->orWhere('email', 'like', '%'.$descripcion.'%')->paginate(10);
         $vista = view('usuarios.tabla', compact('usuarios'))->render();
         return response()->json(['html' => $vista]);
-
     }
 }

@@ -7,7 +7,7 @@ use App\Models\Prestamo;
 use App\Models\Cliente;
 use App\Models\User;
 use App\Models\Caja;
-
+use App\Models\Pago;
 use Illuminate\Support\Facades\Auth;
 
 class PrestamoController extends Controller
@@ -92,9 +92,9 @@ class PrestamoController extends Controller
         return redirect()->route('prestamos.create');
     }
     public function show(Prestamo $prestamo){
-        $prestamo = Prestamo::with('cliente:id,dni,nombres,apellidos')->find($prestamo->id);
-        //return view('prestamos.show', compact('prestamo'));
-        $vista = view('prestamos.show', compact('prestamo'))->render();
+        $data['prestamo'] = Prestamo::with('cliente:id,dni,nombres,apellidos')->find($prestamo->id);
+        $data['pagos'] = Pago::with('usuario:id,name')->where('id_prestamo', $prestamo->id)->get();
+        $vista = view('prestamos.show', $data)->render();
         return response()->json(['html' => $vista]);
     }
     public function destroy(Prestamo $prestamo){
@@ -105,8 +105,8 @@ class PrestamoController extends Controller
         $vista = view('prestamos.edit', compact('prestamo'))->render();
         return response()->json(['html' => $vista]);
     }
-    public function update(Request $request, Prestamo $prestamo){
 
+    public function update(Request $request, Prestamo $prestamo){
         $validatedData = $request->validate([
             'dni'   => 'required|max:8',
             'nombres' => 'required|string|max:255',
@@ -155,5 +155,23 @@ class PrestamoController extends Controller
         $request->session()->flash('success', 'Los datos se han actualizaron exitosamente.');
         return redirect()->route('prestamos.index');
 
+    }
+    public function cargarlista(Request $request){
+        $descripcion = $request->descripcion;
+        // $prestamos = Prestamo::with(['cliente:id,apellidos,nombres,dni', 'usuario:id,name'])
+        // ->where('cliente.apellidos', 'like', '%'.$descripcion.'%')
+        // ->orWhere('cliente.nombres', 'like', '%'.$descripcion.'%')
+        // ->orderBy('fecha', 'desc')->paginate(5);
+
+        $prestamos=Prestamo::whereHas('cliente', function($query) use ($descripcion) {
+            $query->where('apellidos', 'like', '%' . $descripcion . '%')
+                  ->orWhere('nombres', 'like', '%' . $descripcion . '%');
+        })
+        ->with(['cliente:id,apellidos,nombres,dni', 'usuario:id,name'])
+        ->orderBy('fecha', 'desc')
+        ->paginate(5);
+
+        $vista = view('prestamos.tabla', compact('prestamos'))->render();
+        return response()->json(['html' => $vista]);
     }
 }

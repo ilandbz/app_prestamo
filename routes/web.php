@@ -33,8 +33,11 @@ Route::resource('usuarios', UsuarioController::class)->middleware(['auth', 'veri
 Route::resource('prestamos', PrestamoController::class)->middleware(['auth', 'verified']);
 Route::resource('clientes', ClienteController::class)->middleware(['auth', 'verified']);
 Route::resource('gastos', GastoController::class)->middleware(['auth', 'verified']);
+Route::post('/prestamos/cargarpagosfecha', [PagoController::class, 'cargarpagos'])->name('prestamos.cargarpagos');
+Route::post('/prestamos/cargarlista', [PrestamoController::class, 'cargarlista'])->name('prestamos.cargarlista');
 
 
+Route::post('/gastos/cargarlista', [GastoController::class, 'cargarlista'])->name('gastos.cargarlista');
 Route::get('/pagos', [PagoController::class, 'index'])->middleware(['auth', 'verified'])->name('pagos.index');
 Route::get('/pagos/create/{prestamo}', [PagoController::class, 'create'])->middleware(['auth', 'verified'])->name('pagos.create');
 Route::post('/pagos/store', [PagoController::class, 'store'])->name('pagos.store');
@@ -46,6 +49,8 @@ Route::post('/caja/store', [PagoController::class, 'store'])->middleware(['auth'
 Route::get('/caja/show', [CajaController::class, 'show'])->middleware(['auth', 'verified'])->name('caja.show');
 Route::delete('/caja/{caja}', [CajaController::class, 'destroy'])->middleware(['auth', 'verified'])->name('caja.destroy');
 Route::post('/caja/update', [CajaController::class, 'store'])->middleware(['auth', 'verified'])->name('caja.update');
+Route::post('/cliente/obtenerdatos', [ClienteController::class, 'obtenerdatos'])->middleware(['auth', 'verified'])->name('cliente.obtenerdatos');
+Route::post('/caja/cargarlista', [CajaController::class, 'cargarlista'])->name('caja.cargarlista');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
