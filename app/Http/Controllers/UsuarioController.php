@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Gestor;
 use Illuminate\Validation\Rules;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -25,7 +27,7 @@ class UsuarioController extends Controller
             $file = $request->file('imagen');
             $nombre_archivo = time().".".mb_strtolower($file->extension());
             Storage::disk('public')->put('profiles/'.$nombre_archivo,File::get($file));
-        } else {
+        }else{
             $nombre_archivo = 'default.png';
         }
         $user = User::create([
@@ -38,7 +40,13 @@ class UsuarioController extends Controller
             'imagen'    => $nombre_archivo,
             'id_tipo_user' => $request->id_tipo_user
         ]);
-        $request->session()->flash('success', 'Los datos se han actualizaron exitosamente.');
+        if($request->id_tipo_user==3){//es gestor
+            Gestor::create([
+                'id_usuario'    => $user->id,
+                'id_supervisor' => $request->id_supervisor
+            ]);
+        }
+        $request->session()->flash('success', 'Los datos se han Guardaron exitosamente.');
         return redirect()->route('usuarios.create');
     }
     public function edit(User $usuario){
@@ -88,6 +96,11 @@ class UsuarioController extends Controller
         $descripcion = $request->descripcion;
         $usuarios=User::with('TipoUsuario:id,nombre')->where('name', 'like', '%'.$descripcion.'%')->orWhere('email', 'like', '%'.$descripcion.'%')->paginate(10);
         $vista = view('usuarios.tabla', compact('usuarios'))->render();
+        return response()->json(['html' => $vista]);
+    }
+    public function cargarsupervisores(){
+        $usuarios = User::where('id_tipo_user', 2)->get();//todos los gestores
+        $vista = view('usuarios.supervisorselect', compact('usuarios'))->render();
         return response()->json(['html' => $vista]);
     }
 }

@@ -63,7 +63,7 @@
             </div>
             <div>
                 <x-input-label for="id_tipo_user" :value="__('Tipo Usuario')" />
-                <select id="id_tipo_user" name="id_tipo_user"
+                <select id="id_tipo_user" name="id_tipo_user" onchange="validar()"
                 readonly
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <option value="">--Seleccione--</option>
@@ -72,7 +72,12 @@
                 <option value="3">Gestor</option>
                 <option value="4">Cliente</option>
                 </select>
+                <br>
+                <div id="mostrarsupervisor">
+
+                </div>
             </div>
+
             <div>
                 <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
                 <x-text-input id="password_confirmation" class="block mt-1 w-full"

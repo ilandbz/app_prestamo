@@ -20,7 +20,6 @@
         .catch(error => console.error('Error:', error));
     }
     function exportTableToExcel(tableID, filename = ''){
-        console.log('asdasasdads')
         var downloadLink;
         var dataType = 'application/vnd.ms-excel';
         var tableSelect = document.getElementById(tableID);
@@ -42,6 +41,17 @@
             downloadLink.download = filename;
             //triggering the function
             downloadLink.click();
+        }
+    }
+    function validar(){
+        var tipo_user = document.getElementById('id_tipo_user').value;
+        if(tipo_user==3){
+            const url = '{{ route('usuarios.cargarsupervisores') }}';
+            fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('mostrarsupervisor').innerHTML = data.html;
+            });
         }
     }
 </script>

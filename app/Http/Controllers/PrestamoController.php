@@ -13,8 +13,19 @@ use Illuminate\Support\Facades\Auth;
 class PrestamoController extends Controller
 {
     public function index(){
-        $data['prestamos'] = Prestamo::with(['cliente:id,apellidos,nombres,dni', 'usuario:id,name'])->orderBy('fecha', 'desc')->paginate(5);
-        //$data['contenido']='prestamos.inicio';
+
+        if(session('tipo_usuario')=='Gestor'){
+            $idusuario = Auth::user()->id;
+            $data['prestamos']=Prestamo::whereHas(
+                    'usuario', function($query) use ($idusuario) {
+                        $query->where('id', $idusuario);
+                        })
+            ->with(['cliente:id,apellidos,nombres,dni', 'usuario:id,name'])
+            ->orderBy('fecha', 'desc')
+            ->paginate(5);
+        }else{
+            $data['prestamos'] = Prestamo::with(['cliente:id,apellidos,nombres,dni', 'usuario:id,name'])->orderBy('fecha', 'desc')->paginate(5);
+        }
         return view('prestamos.plantilla', $data);
     }
 

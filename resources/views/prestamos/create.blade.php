@@ -24,7 +24,7 @@
             <tr>
                 <td width="20%" class="p-2">
                     <x-input-label for="dni" :value="__('DNI')" />
-                    <x-text-input id="dni" class="block mt-1 w-full" type="text" name="dni" :value="old('dni')" required autofocus
+                    <x-text-input id="dni" class="block mt-1 w-full" maxlength="8" type="text" name="dni" :value="old('dni')" required autofocus
                     onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                     onchange="cargardatoscliente()"  />
                     <x-input-error :messages="$errors->get('dni')" class="mt-2" field="dni" />
@@ -170,14 +170,22 @@
                 </td>
                 <td class="p-2">
                     <x-input-label for="id_gestor" :value="__('Gestor')" />
+                    @if (Auth::user()->id_tipo_user==3)
                     <select id="id_gestor" name="id_gestor" required
-                    onchange="calcularTotal()"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option value="{{ Auth::user()->id }}">{{ Auth::user()->name }}</option>
+                    </select>
+                    @else
+                    <select id="id_gestor" name="id_gestor" required
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option value="">Seleccione</option>
                         @foreach($gestores as $gestor)
                             <option value="{{ $gestor->id }}">{{ $gestor->name }}</option>
                         @endforeach
                     </select>
+                    @endif
+
+
                 </td>
             </tr>
         </table>

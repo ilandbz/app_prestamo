@@ -33,7 +33,7 @@
                                     {{ __('Listar') }}
                                 </x-nav-button-link>
                             </li>
-                            @if(session('tipo_usuario')!='Gestor')
+                            @if(session('tipo_usuario')=='Gestor' || session('tipo_usuario')=='Administrador')
                             <li class="w-full">
                                 <x-nav-button-link :href="route('prestamos.create')" :active="request()->routeIs('prestamos.create')">
                                     {{ __('Nuevo Registro') }}
