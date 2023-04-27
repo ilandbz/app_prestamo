@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Caja;
 class CajaController extends Controller
@@ -20,7 +20,23 @@ class CajaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'descripcion' => 'required',
+            'fecha' => 'required',
+            'monto' => 'required'
+        ]);
+        $saldo = Caja::saldo();
+        $caja=new Caja();
+        $caja->fecha=now();
+        $caja->id_usuario = Auth::user()->id;
+        $caja->tipo = 'INGRESO';
+        $caja->monto = $request->monto;
+        $caja->saldo = $saldo + $request->monto;
+        $caja->descripcion = $request->descripcion;
+        $caja->save();
+
+        $request->session()->flash('success', 'Los datos se han guardado exitosamente.');
+        return redirect()->route('caja.create');
     }
 
     /**
@@ -52,5 +68,8 @@ class CajaController extends Controller
         $cajaregistros = Caja::with('usuario:id,name')->where('descripcion', 'like', '%'.$descripcion.'%')->orderBy('fecha', 'desc')->paginate(5);
         $vista = view('caja.tabla', compact('cajaregistros'))->render();
         return response()->json(['html' => $vista]);
+    }
+    public function create(){
+        return view('caja.plantilla');
     }
 }

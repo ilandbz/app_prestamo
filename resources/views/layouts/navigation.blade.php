@@ -22,17 +22,21 @@
                         <x-nav-link :href="route('caja.index')" :active="request()->routeIs('caja.*')">
                             Caja
                         </x-nav-link>
+                        <x-nav-link :href="route('prestamos.index')" :active="request()->routeIs('prestamos.*')">
+                            Prestamos
+                        </x-nav-link> 
+                        <x-nav-link :href="route('gastos.index')" :active="request()->routeIs('gastos.*')">
+                            Gastos
+                        </x-nav-link>
+                    @endif
+                    @if (session('tipo_usuario')=='Gestor')
+                        <x-nav-link :href="route('prestamos.index')" :active="request()->routeIs('prestamos.*')">
+                            Prestamos
+                        </x-nav-link>                        
                     @endif
                     @if (session('tipo_usuario')=='Cliente')
                         <x-nav-link :href="route('prestamos.index')" :active="request()->routeIs('prestamos.*')">
                             Prestamos
-                        </x-nav-link>
-                    @else
-                        <x-nav-link :href="route('prestamos.index')" :active="request()->routeIs('prestamos.*')">
-                            Prestamos
-                        </x-nav-link>
-                        <x-nav-link :href="route('gastos.index')" :active="request()->routeIs('gastos.*')">
-                            Gastos
                         </x-nav-link>
                     @endif
                 </div>

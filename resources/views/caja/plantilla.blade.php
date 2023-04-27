@@ -9,15 +9,15 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-2">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="text-gray-900 p-2">
+                <div class="p-6 text-gray-900">
                     <ul class="hidden mb-4 text-sm font-medium text-center text-gray-500 divide-x divide-gray-200 rounded-lg shadow sm:flex dark:divide-gray-700 dark:text-gray-400">
                         <li class="w-full">
-                            <x-nav-button-link :href="route('gastos.index')" :active="request()->routeIs('gastos.index')">
+                            <x-nav-button-link :href="route('caja.index')" :active="request()->routeIs('caja.index')">
                                 {{ __('Listar') }}
                             </x-nav-button-link>
                         </li>
                         <li class="w-full">
-                            <x-nav-button-link :href="route('gastos.create')" :active="request()->routeIs('gastos.create')">
+                            <x-nav-button-link :href="route('caja.create')" :active="request()->routeIs('caja.create')">
                                 {{ __('Nuevo Registro') }}
                             </x-nav-button-link>
                         </li>

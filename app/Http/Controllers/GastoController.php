@@ -31,7 +31,7 @@ class GastoController extends Controller
             $caja->tipo = 'SALIDA';
             $caja->monto = $request->monto;
             $caja->saldo = $saldo - $request->monto;
-            $caja->descripcion = 'GASTO';
+            $caja->descripcion = $request->concepto;
             $caja->save();
 
             $gasto=new Gasto();

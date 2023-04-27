@@ -19,7 +19,7 @@ class PagoController extends Controller
                 $query->WhereHas('prestamo.cliente',function($q) use($dni){
                         $q->where('dni', $dni);
                     });
-            })
+            })->where('fecha', 'like', '%'.date('Y-m-d').'%')
             ->paginate(10);
 
         }elseif(session('tipo_usuario')=='Gestor'){
@@ -34,11 +34,12 @@ class PagoController extends Controller
             $pagos = Pago::with(['usuario:id,name', 'prestamo:id,saldo,id_cliente', 'prestamo.cliente:id,apellidos,nombres,dni'])
             ->WhereHas('usuario',function($q) use($idusuario){
                         $q->where('id', $idusuario);
-            })
+            })->where('fecha', 'like', '%'.date('Y-m-d').'%')
             ->paginate(10);
 
         }else{
-            $pagos = Pago::with(['usuario:id,name', 'prestamo:id,saldo,id_cliente', 'prestamo.cliente:id,apellidos,nombres'])->paginate(10);
+            $pagos = Pago::with(['usuario:id,name', 'prestamo:id,saldo,id_cliente', 'prestamo.cliente:id,apellidos,nombres'])
+            ->where('fecha', 'like', '%'.date('Y-m-d').'%')->paginate(10);
         }
         return view('prestamos.plantilla',compact('pagos'));
     }
