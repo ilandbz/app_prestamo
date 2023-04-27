@@ -9,11 +9,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 class UsuarioController extends Controller
 {
     public function index(){
-        $usuarios=User::with('TipoUsuario:id,nombre')->paginate(10);
-        return view('usuarios.inicio', compact('usuarios'));
+        if(session('tipo_usuario')=='Supervisor'){
+            // $usuarios=User::with('TipoUsuario:id,nombre')->where('id_tipo_user', 3)->paginate(10);
+            // return view('usuarios.inicio', compact('usuarios')); 
+
+            $usuarios=Gestor::with('usuario:id,name,email,telefono,direccion,imagen')->where('id_supervisor', Auth::user()->id)->paginate(10);
+            return view('usuarios.inicio', compact('usuarios')); 
+        }else{
+            $usuarios=User::with('TipoUsuario:id,nombre')->paginate(10);
+            return view('usuarios.inicio', compact('usuarios'));            
+        }
     }
     public function store(Request $request){
         $request->validate([

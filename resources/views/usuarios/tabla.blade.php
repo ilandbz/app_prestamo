@@ -1,4 +1,31 @@
 <div class="relative overflow-x-auto mt-4">
+
+@if (session('tipo_usuario')=='Supervisor')
+    <table id="tablareporte" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">Name</th>
+                <th scope="col" class="px-6 py-3">Email</th>
+                <th scope="col" class="px-6 py-3">Telefono</th>
+                <th scope="col" class="px-6 py-3">Direccion</th>
+                <th scope="col" class="px-6 py-3">Imagen</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($usuarios as $usuario )
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <td scope="row"  class="px-6 py-4">{{$usuario->usuario->name}}</td>
+                <td scope="row"  class="px-6 py-4">{{$usuario->usuario->email}}</td>
+                <td scope="row"  class="px-6 py-4">{{$usuario->usuario->telefono}}</td>
+                <td scope="row"  class="px-6 py-4">{{$usuario->usuario->direccion}}</td>
+                <td scope="row"  class="px-6 py-4">
+                    <img class="w-10 h-10 rounded-full" src="{{ asset('storage/profiles/'.$usuario->usuario->imagen) }}" alt="Foto">
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table> 
+@else
     <table id="tablareporte" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -40,7 +67,13 @@
             @endforeach
 
         </tbody>
-    </table>
+    </table>    
+@endif
+
+
+
+
+
 <!-- Mostramos los links de paginación -->
 {{ $usuarios->links() }}
 </div>

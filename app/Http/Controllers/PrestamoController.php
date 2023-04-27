@@ -17,7 +17,7 @@ class PrestamoController extends Controller
         if(session('tipo_usuario')=='Gestor'){
             $idusuario = Auth::user()->id;
             $data['prestamos']=Prestamo::whereHas(
-                    'usuario', function($query) use ($idusuario) {
+                    'gestor', function($query) use ($idusuario) {
                         $query->where('id', $idusuario);
                         })
             ->with(['cliente:id,apellidos,nombres,dni', 'usuario:id,name'])

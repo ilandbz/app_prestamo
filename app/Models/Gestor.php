@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Gestor extends Model
 {
@@ -13,4 +14,9 @@ class Gestor extends Model
         'id_usuario',
         'id_supervisor'
     ];
+    public function usuario(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'id_usuario');
+    }
+
 }
